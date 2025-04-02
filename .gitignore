@@ -39,7 +39,6 @@ htmlcov/
 venv/
 ENV/
 conda-env/
-environment.yml
 
 # Docker
 .docker/
