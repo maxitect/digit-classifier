@@ -1,0 +1,12 @@
+# To create the conda environment, run:
+#   conda env create -f environment.yml
+name: mnist-digit-classifier
+channels:
+  - defaults
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.13.2
+  - pytorch=2.6
+  - streamlit=1.44.0
+  - psycopg=3.2.6
