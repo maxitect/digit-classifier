@@ -1,5 +1,6 @@
 # Python
 __pycache__/
+*.pyc
 *.py[cod]
 *$py.class
 *.so
@@ -80,4 +81,3 @@ temp/
 
 # Miscellaneous
 .history/
-node_modules/
