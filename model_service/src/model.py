@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class MNISTCNN(nn.Module):
     def __init__(self):
         super(MNISTCNN, self).__init__()
@@ -20,7 +21,8 @@ class MNISTCNN(nn.Module):
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
-    
+
+
 if __name__ == "__main__":
     model = MNISTCNN()
     dummy_input = torch.randn(1, 1, 28, 28)
