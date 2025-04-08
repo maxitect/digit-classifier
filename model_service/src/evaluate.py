@@ -18,9 +18,16 @@ def get_test_loader(batch_size=64, download=True):
         transforms.Normalize((0.1307,), (0.3081,))
     ])
     test_dataset = datasets.MNIST(
-        root='./data', train=False, download=download, transform=transform)
+        root='./data',
+        train=False,
+        download=download,
+        transform=transform
+    )
     test_loader = DataLoader(
-        test_dataset, batch_size=batch_size, shuffle=False)
+        test_dataset,
+        batch_size=batch_size,
+        shuffle=False
+    )
     return test_loader
 
 
