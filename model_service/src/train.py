@@ -64,7 +64,7 @@ def main():
             model, device,
             valid_loader,
             criterion
-            )
+        )
         print(
             f"Epoch {epoch}: Train Loss: {train_loss:.4f}, "
             f"Valid Loss: {valid_loss:.4f}, Valid Acc: {valid_accuracy:.4f}"
