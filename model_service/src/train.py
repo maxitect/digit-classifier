@@ -5,7 +5,6 @@ from data_loader import get_data_loaders
 from model import MNISTCNN
 import argparse
 import os
-import logging
 
 
 def train(model, device, train_loader, optimizer, criterion):
@@ -42,11 +41,36 @@ def validate(model, device, valid_loader, criterion):
 
 def main():
     parser = argparse.ArgumentParser(description="Train MNIST CNN model")
-    parser.add_argument('--batch-size', type=int, default=64, help='Batch size for training')
-    parser.add_argument('--num-epochs', type=int, default=20, help='Number of training epochs')
-    parser.add_argument('--patience', type=int, default=3, help='Early stopping patience')
-    parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
-    parser.add_argument('--checkpoint-dir', type=str, default='model_service/src/checkpoints', help='Directory to save checkpoints')
+    parser.add_argument(
+        '--batch-size',
+        type=int,
+        default=64,
+        help='Batch size for training'
+    )
+    parser.add_argument(
+        '--num-epochs',
+        type=int,
+        default=20,
+        help='Number of training epochs'
+    )
+    parser.add_argument(
+        '--patience',
+        type=int,
+        default=3,
+        help='Early stopping patience'
+    )
+    parser.add_argument(
+        '--lr',
+        type=float,
+        default=0.001,
+        help='Learning rate'
+    )
+    parser.add_argument(
+        '--checkpoint-dir',
+        type=str,
+        default='model_service/src/checkpoints',
+        help='Directory to save checkpoints'
+    )
     args = parser.parse_args()
 
     batch_size = args.batch_size
@@ -86,11 +110,15 @@ def main():
             f"Valid Loss: {valid_loss:.4f}, Valid Acc: {valid_accuracy:.4f}"
         )
         # Save checkpoint for this epoch
-        checkpoint_path = os.path.join(args.checkpoint_dir, f"epoch_{epoch}.pth")
+        checkpoint_path = os.path.join(
+            args.checkpoint_dir, f"epoch_{epoch}.pth")
         torch.save(model.state_dict(), checkpoint_path)
         # Log metrics to CSV file
         with open(log_file, "a") as f:
-            f.write(f"{epoch},{train_loss:.4f},{valid_loss:.4f},{valid_accuracy:.4f}\n")
+            f.write(
+                f"{epoch},{train_loss:.4f},"
+                f"{valid_loss:.4f},{valid_accuracy:.4f}\n"
+            )
 
         if valid_accuracy > best_accuracy:
             best_accuracy = valid_accuracy
