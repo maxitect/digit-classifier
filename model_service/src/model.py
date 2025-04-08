@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -19,3 +20,10 @@ class MNISTCNN(nn.Module):
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return x
+    
+if __name__ == "__main__":
+    model = MNISTCNN()
+    dummy_input = torch.randn(1, 1, 28, 28)
+    output = model(dummy_input)
+    print(f"Model output shape: {output.shape}")
+    print(f"Example output: {output[0]}")
