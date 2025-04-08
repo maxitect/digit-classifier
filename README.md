@@ -36,8 +36,8 @@ Communication between services is handled over HTTP for the model service and vi
 3. **Starting the Services**
 
    - **Database**: Start the PostgreSQL container.
-   - **Model Service**: Run `python model_service/src/main.py`.
-   - **Web App**: Run `python web_app/src/app.py`.
+   - **Model Service**: In your conda environment, run `python model_service/src/main.py`.
+   - **Web App**: Run `streamlit run web_app/src/app.py`.
 
 4. **Running Tests**
    - Run tests for each component:
