@@ -3,6 +3,9 @@ import torch.nn as nn
 import torch.optim as optim
 from data_loader import get_data_loaders
 from model import MNISTCNN
+import argparse
+import os
+import logging
 
 
 def train(model, device, train_loader, optimizer, criterion):
@@ -38,11 +41,24 @@ def validate(model, device, valid_loader, criterion):
 
 
 def main():
-    # Settings
-    batch_size = 64
-    num_epochs = 20
-    early_stopping_patience = 3
-    learning_rate = 0.001
+    parser = argparse.ArgumentParser(description="Train MNIST CNN model")
+    parser.add_argument('--batch-size', type=int, default=64, help='Batch size for training')
+    parser.add_argument('--num-epochs', type=int, default=20, help='Number of training epochs')
+    parser.add_argument('--patience', type=int, default=3, help='Early stopping patience')
+    parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
+    parser.add_argument('--checkpoint-dir', type=str, default='model_service/src/checkpoints', help='Directory to save checkpoints')
+    args = parser.parse_args()
+
+    batch_size = args.batch_size
+    num_epochs = args.num_epochs
+    early_stopping_patience = args.patience
+    learning_rate = args.lr
+
+    os.makedirs(args.checkpoint_dir, exist_ok=True)
+    # Create a CSV log file for training metrics
+    log_file = os.path.join(args.checkpoint_dir, "training_log.csv")
+    with open(log_file, "w") as f:
+        f.write("epoch,train_loss,valid_loss,valid_accuracy\n")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -69,6 +85,12 @@ def main():
             f"Epoch {epoch}: Train Loss: {train_loss:.4f}, "
             f"Valid Loss: {valid_loss:.4f}, Valid Acc: {valid_accuracy:.4f}"
         )
+        # Save checkpoint for this epoch
+        checkpoint_path = os.path.join(args.checkpoint_dir, f"epoch_{epoch}.pth")
+        torch.save(model.state_dict(), checkpoint_path)
+        # Log metrics to CSV file
+        with open(log_file, "a") as f:
+            f.write(f"{epoch},{train_loss:.4f},{valid_loss:.4f},{valid_accuracy:.4f}\n")
 
         if valid_accuracy > best_accuracy:
             best_accuracy = valid_accuracy
