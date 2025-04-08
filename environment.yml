@@ -8,5 +8,6 @@ channels:
 dependencies:
   - python=3.13.2
   - pytorch=2.6
+  - torchvision=0.21.0
   - streamlit=1.44.0
   - psycopg=3.2.6
