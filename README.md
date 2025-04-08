@@ -49,7 +49,7 @@ Communication between services is handled over HTTP for the model service and vi
 
 ## Contributing
 
-Please refer to [STANDARDS.md](STANDARDS.md) for coding practices and [ADR.md](ADR.md) for architectural decision details.
+Please refer to [STANDARDS.md](STANDARDS.md) for coding practices, [SPEC.md](SPEC.md) for the detailed specification and [ADR.md](ADR.md) for architectural decision details.
 
 ## License
 
