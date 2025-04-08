@@ -1,4 +1,3 @@
-# Placeholder for model_service main application logic.
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
