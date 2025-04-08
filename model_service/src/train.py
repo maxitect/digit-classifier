@@ -4,6 +4,7 @@ import torch.optim as optim
 from data_loader import get_data_loaders
 from model import MNISTCNN
 
+
 def train(model, device, train_loader, optimizer, criterion):
     model.train()
     running_loss = 0.0
@@ -17,6 +18,7 @@ def train(model, device, train_loader, optimizer, criterion):
         running_loss += loss.item() * data.size(0)
     epoch_loss = running_loss / len(train_loader.dataset)
     return epoch_loss
+
 
 def validate(model, device, valid_loader, criterion):
     model.eval()
@@ -33,6 +35,7 @@ def validate(model, device, valid_loader, criterion):
     epoch_loss = running_loss / len(valid_loader.dataset)
     accuracy = correct / len(valid_loader.dataset)
     return epoch_loss, accuracy
+
 
 def main():
     # Settings
@@ -57,8 +60,15 @@ def main():
 
     for epoch in range(1, num_epochs + 1):
         train_loss = train(model, device, train_loader, optimizer, criterion)
-        valid_loss, valid_accuracy = validate(model, device, valid_loader, criterion)
-        print(f"Epoch {epoch}: Train Loss: {train_loss:.4f}, Valid Loss: {valid_loss:.4f}, Valid Acc: {valid_accuracy:.4f}")
+        valid_loss, valid_accuracy = validate(
+            model, device,
+            valid_loader,
+            criterion
+            )
+        print(
+            f"Epoch {epoch}: Train Loss: {train_loss:.4f}, "
+            f"Valid Loss: {valid_loss:.4f}, Valid Acc: {valid_accuracy:.4f}"
+        )
 
         if valid_accuracy > best_accuracy:
             best_accuracy = valid_accuracy
@@ -71,6 +81,7 @@ def main():
             if epochs_without_improvement >= early_stopping_patience:
                 print("Early stopping triggered.")
                 break
+
 
 if __name__ == "__main__":
     main()
