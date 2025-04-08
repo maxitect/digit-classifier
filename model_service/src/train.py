@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from model_service.src.data_loader import get_data_loaders
-from model_service.src.main import MNISTCNN
+from model_service.src.model import MNISTCNN
 
 def train(model, device, train_loader, optimizer, criterion):
     model.train()
