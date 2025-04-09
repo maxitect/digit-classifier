@@ -1,6 +1,6 @@
 import os
 import torch
-from model_service.src.model import MNISTCNN
+from model import MNISTCNN
 
 
 def load_model(model_path: str):
@@ -11,8 +11,14 @@ def load_model(model_path: str):
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model file not found at {model_path}")
     try:
-        model = MNISTCNN()
-        model.load_state_dict(torch.load(model_path, map_location="cpu"))
+        # For TorchScript models use torch.jit.load instead
+        if model_path.endswith('.pt'):
+            model = torch.jit.load(model_path)
+        else:
+            # For regular PyTorch models
+            model = MNISTCNN()
+            model.load_state_dict(torch.load(model_path, map_location="cpu"))
+
         model.eval()
         return model
     except Exception as e:
