@@ -4,6 +4,47 @@ from PIL import Image
 from fastapi.testclient import TestClient
 import pytest
 from model_service.src.app import app
+from unittest import mock
+import torch
+
+
+# Create a proper mock model that behaves more like a real PyTorch model
+class MockModel(mock.MagicMock):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Create a dummy parameter to make next(model.parameters()) work
+        self.dummy_param = torch.nn.Parameter(torch.zeros(1))
+
+    def __call__(self, x):
+        # Return a tensor with 10 outputs (one for each digit)
+        return torch.tensor(
+            [[0.1, 0.1, 0.1, 0.1, 0.1, 0.9, 0.1, 0.1, 0.1, 0.1]]
+        )
+
+    def to(self, device):
+        # Simply return self to simulate device movement
+        return self
+
+    def parameters(self):
+        # Yield the dummy parameter
+        yield self.dummy_param
+
+    def eval(self):
+        # Return self for method chaining
+        return self
+
+
+# Create an instance of our mock model
+mock_model = MockModel()
+
+# Mock the model loading function before importing the app
+with mock.patch(
+    'model_service.src.utils.model_loader.load_model',
+    return_value=mock_model
+):
+
+    # Explicitly set the model in app state
+    app.state.model = mock_model
 
 client = TestClient(app)
 
