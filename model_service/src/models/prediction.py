@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Dict
 
 
 class PredictRequest(BaseModel):
@@ -7,4 +8,4 @@ class PredictRequest(BaseModel):
 
 class PredictResponse(BaseModel):
     prediction: str
-    confidence: float
+    confidence: Dict[str, float]
