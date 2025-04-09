@@ -3,10 +3,10 @@ from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import logging
-from model_service.src.config import settings
-from model_service.src.utils.model_loader import load_model
-from model_service.src.routers import predict
-from model_service.src.models.prediction import ErrorResponse
+from config import settings
+from utils.model_loader import load_model
+from routers import predict
+from models.prediction import ErrorResponse
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -53,7 +53,7 @@ def create_app():
     )
 
     # Include routers
-    app.include_router(predict.router, prefix="/predict", tags=["prediction"])
+    app.include_router(predict.router, tags=["prediction"])
 
     # Global error handling
     async def general_exception_handler(request: Request, exc: Exception):
