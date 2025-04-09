@@ -3,10 +3,10 @@ from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import logging
-from config import settings
-from utils.model_loader import load_model
-from routers import predict
-from models.prediction import ErrorResponse
+from model_service.src.config import settings
+from model_service.src.utils.model_loader import load_model
+from model_service.src.routers import predict
+from model_service.src.models.prediction import ErrorResponse
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
