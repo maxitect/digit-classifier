@@ -1,8 +1,8 @@
-# placeholder for the main entry point of the model service
+import uvicorn
+from app import app
 
 def main():
-    print("Model service started")
-
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 if __name__ == "__main__":
     main()

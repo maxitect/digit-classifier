@@ -22,6 +22,16 @@ app.add_middleware(
 # Include routers
 app.include_router(predict.router, prefix="/predict", tags=["predict"])
 
+from config import settings
+from utils.model_loader import load_model
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info("Loading model...")
+    model = load_model(settings.model_path)
+    app.state.model = model
+    logger.info("Model loaded successfully.")
+
 
 # Global error handling example
 @app.exception_handler(Exception)
