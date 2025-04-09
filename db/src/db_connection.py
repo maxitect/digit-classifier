@@ -4,10 +4,12 @@ from psycopg_pool import ConnectionPool
 
 logger = logging.getLogger(__name__)
 
-# Use DATABASE_URL environment variable or fallback to a default connection string.
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://user:password@localhost:5432/mydatabase")
+# Use DATABASE_URL env variable or fallback to a default connection string.
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL", "postgresql://user:password@localhost:5432/mydatabase")
 
 pool = None
+
 
 def init_pool(min_size: int = 1, max_size: int = 10):
     """
@@ -15,11 +17,13 @@ def init_pool(min_size: int = 1, max_size: int = 10):
     """
     global pool
     try:
-        pool = ConnectionPool(DATABASE_URL, min_size=min_size, max_size=max_size)
+        pool = ConnectionPool(
+            DATABASE_URL, min_size=min_size, max_size=max_size)
         logger.info("Database connection pool created successfully.")
     except Exception as e:
         logger.error(f"Failed to create database connection pool: {e}")
         raise
+
 
 def get_connection():
     """
@@ -34,6 +38,7 @@ def get_connection():
     except Exception as e:
         logger.error(f"Error obtaining a connection from the pool: {e}")
         raise
+
 
 def execute_query(query: str, params: tuple = None):
     """
@@ -58,6 +63,7 @@ def execute_query(query: str, params: tuple = None):
         raise
     finally:
         pool.putconn(conn)
+
 
 def close_pool():
     """
