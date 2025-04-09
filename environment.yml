@@ -13,3 +13,4 @@ dependencies:
   - psycopg=3.2.6
   - scikit-learn=1.6.1
   - fastapi=0.112.2
+  - uvicorn=0.32.1
