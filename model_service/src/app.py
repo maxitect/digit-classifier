@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from routers import predict
 import logging
 
 # Configure logging
@@ -19,14 +20,15 @@ app.add_middleware(
 )
 
 # Include routers
-from routers import predict
 app.include_router(predict.router, prefix="/predict", tags=["predict"])
+
 
 # Global error handling example
 @app.exception_handler(Exception)
 async def general_exception_handler(request, exc):
     logger.error(f"Unhandled exception: {exc}")
     return HTTPException(status_code=500, detail="Internal Server Error")
+
 
 @app.get("/")
 async def root():
