@@ -64,7 +64,6 @@ logs/
 # Model files and data
 data/
 !data/.gitkeep
-models/
 !models/.gitkeep
 saved_models/
 
