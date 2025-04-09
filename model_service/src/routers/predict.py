@@ -12,7 +12,16 @@ async def predict(request_body: PredictRequest, request: Request):
         raise HTTPException(status_code=500, detail="Model not loaded")
     # Preprocess the image data
     processed_image = preprocess_image(request_body.image_data)
-    # TODO: Implement actual prediction using the model and processed_image
-    dummy_prediction = "7"
-    dummy_confidence = 0.95
-    return PredictResponse(prediction=dummy_prediction, confidence=dummy_confidence)
+    import torch
+    # Ensure the processed image has a batch dimension
+    if processed_image.dim() == 3:
+        processed_image = processed_image.unsqueeze(0)
+    try:
+        with torch.no_grad():
+            output = model(processed_image)
+            probabilities = torch.softmax(output, dim=1).squeeze(0)
+            predicted_digit = int(probabilities.argmax().item())
+            confidence_scores = {str(i): float(probabilities[i].item()) for i in range(probabilities.size(0))}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error during inference: {e}")
+    return PredictResponse(prediction=str(predicted_digit), confidence=confidence_scores)
