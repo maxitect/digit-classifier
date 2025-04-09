@@ -2,6 +2,7 @@ import os
 import torch
 from model_service.src.model import MNISTCNN
 
+
 def load_model(model_path: str):
     """
     Load the machine learning model from the specified checkpoint.
