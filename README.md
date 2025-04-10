@@ -28,18 +28,26 @@ Communication between services is handled over HTTP for the model service and vi
    git clone git@github.com:maxitect/digit-classifier.git
    ```
 2. **Environment Setup**
+
    - Install dependencies using Conda:
      ```bash
      conda env create -f environment.yml -n mnist
      conda activate mnist
      ```
-3. **Starting the Services**
+
+3. **Train the Model**
+
+   - **Train**: `python model_services/src/train.py`
+   - **Evaluate**: `python model_services/src/evaluate.py`
+   - **Export**: `python model_services/src/export.py`
+
+4. **Starting the Services**
 
    - **Database**: Start the PostgreSQL container.
    - **Model Service**: In your conda environment, run `python model_service/src/main.py`.
    - **Web App**: Run `streamlit run web_app/src/app.py`.
 
-4. **Running Tests**
+5. **Running Tests**
    - Run tests for each component:
      ```bash
      python -m unittest discover -s model_service/tests
