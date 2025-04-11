@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 # Use DATABASE_URL env variable or fallback to a default connection string
 DATABASE_URL = os.environ.get(
-    "DATABASE_URL", "postgresql://user:password@localhost:5432/mydatabase")
+    "DATABASE_URL", "postgresql://myuser:mypassword@localhost:5432/mndb")
 
 # Simple connection pool implementation
 _connection_pool = []
