@@ -1,10 +1,12 @@
 import requests
 
-MODEL_SERVICE_URL = "http://localhost:8000/predict"  # Adjust URL based on model service location
+MODEL_SERVICE_URL = "http://localhost:8000/predict"
+
 
 def send_prediction_request(image_data: str) -> dict:
     """
-    Sends a POST request with the base64-encoded image data to the model service's prediction endpoint.
+    Sends a POST request with the base64-encoded image data to the model
+    service's prediction endpoint.
     Returns the prediction result as a dictionary if the request is successful.
     In case of error, returns a dictionary with an 'error' key.
     """
