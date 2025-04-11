@@ -68,7 +68,7 @@ data/
 saved_models/
 
 # Streamlit
-.streamlit/
+secrets.toml
 
 # Temporary files
 tmp/
