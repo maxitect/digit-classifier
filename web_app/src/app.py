@@ -41,7 +41,23 @@ def main():
                 # For now, just display a placeholder for the model response
 
     st.subheader("Prediction Results")
-    st.text("Predicted digit and confidence scores will be shown here.")
+    # Placeholder predictions dictionary for demo purposes (replace with actual predictions)
+    predictions = {
+        '0': 0.05,
+        '1': 0.1,
+        '2': 0.05,
+        '3': 0.6,
+        '4': 0.05,
+        '5': 0.05,
+        '6': 0.02,
+        '7': 0.04,
+        '8': 0.02,
+        '9': 0.02
+    }
+    # Determine predicted digit
+    predicted_digit = max(predictions, key=predictions.get)
+    st.markdown(f"### Predicted Digit: **{predicted_digit}**")
+    st.bar_chart(predictions)
 
     st.subheader("Input True Label")
     true_label = st.text_input("Enter the true label (0-9):")
