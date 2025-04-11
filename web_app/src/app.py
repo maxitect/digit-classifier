@@ -60,9 +60,15 @@ def main():
     st.bar_chart(predictions)
 
     st.subheader("Input True Label")
-    true_label = st.text_input("Enter the true label (0-9):")
-    if true_label:
-        st.write("True Label:", true_label)
+    with st.form(key="true_label_form"):
+        true_label = st.text_input("Enter the true label (0-9):")
+        submit_true_label = st.form_submit_button("Submit True Label")
+        if submit_true_label:
+            if true_label.isdigit() and int(true_label) >= 0 and int(true_label) <= 9:
+                st.success(f"True Label accepted: {true_label}")
+                # TODO: Store the true label along with the prediction if applicable.
+            else:
+                st.error("Invalid input. Please enter a digit between 0 and 9.")
 
 
 if __name__ == "__main__":
