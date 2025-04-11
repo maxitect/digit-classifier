@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
+from db.src.prediction_logger import log_prediction
 
 
 st.set_page_config(
@@ -73,8 +74,16 @@ def main():
             if (true_label.isdigit() and
                     int(true_label) >= 0 and
                     int(true_label) <= 9):
-                st.success(f"True Label accepted: {true_label}")
-                # TODO: Store the true label along with the prediction.
+                try:
+                    # Log the prediction along with the true label
+                    log_prediction(
+                        int(predicted_digit),
+                        predictions[predicted_digit],
+                        int(true_label)
+                    )
+                    st.success(f"True Label accepted and logged: {true_label}")
+                except Exception as e:
+                    st.error(f"Failed to log prediction: {e}")
             else:
                 st.error("Invalid input. Please enter a digit from 0-9.")
 
