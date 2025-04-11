@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
-from db.src.prediction_logger import log_prediction
+from prediction_logger import log_prediction
 
 
 st.set_page_config(
