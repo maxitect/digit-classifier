@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
-from src.utils.prediction_logger import log_prediction
-from src.utils.client import send_prediction_request
+from utils.prediction_logger import log_prediction
+from utils.client import send_prediction_request
 
 
 st.set_page_config(
@@ -41,31 +41,23 @@ def main():
                 img_data = canvas_result.image_data
                 if img_data is not None and img_data.shape[0] > 0:
                     st.write("Image captured! Ready to send to model service.")
-                    send_prediction_request(img_data)
+                    prediction = send_prediction_request(img_data)
                     # This is where you would send the image to model service
                     # For now, just display a placeholder for model response
     with cols[1]:
         # Placeholder predictions dictionary for demo purposes
-        predictions = {
-            '0': 0.05,
-            '1': 0.1,
-            '2': 0.05,
-            '3': 0.6,
-            '4': 0.05,
-            '5': 0.05,
-            '6': 0.02,
-            '7': 0.04,
-            '8': 0.02,
-            '9': 0.02
-        }
-        subcols = st.columns([1, 1])
+        predictions = prediction.get("confidence", {})
+        subcols = st.columns([2, 1, 1])
         with subcols[0]:
             st.subheader("Prediction Results")
         with subcols[1]:
-            predicted_digit = max(predictions, key=predictions.get)
+            predicted_digit = predictions.get("prediction", "N/A")
+            st.markdown("")
             st.markdown(f"Predicted Digit: **{predicted_digit}**")
+        with subcols[2]:
+            st.markdown("")
             st.markdown(
-                f"Confidence Score: **{predictions[predicted_digit]:.2f}**"
+                f"Confidence Score: **{predictions[predicted_digit]}**"
             )
 
         # Determine predicted digit
