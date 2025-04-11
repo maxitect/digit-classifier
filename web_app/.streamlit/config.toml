@@ -1,0 +1,17 @@
+[client]
+# Minimal appearance of user interface
+toolbarMode="minimal"
+
+[theme]
+primaryColor="#9A928F"
+backgroundColor="#FFB400"
+secondaryBackgroundColor="#e0dedd"
+textColor="#000000"
+font="monospace"
+
+[browser]
+gatherUsageStats=false
+
+[server]
+enableXsrfProtection=true
+enableCORS=false
