@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="MNIST Digit Classifier",
@@ -15,7 +16,45 @@ def main():
     )
 
     st.subheader("Drawing Canvas")
-    st.text("Drawing canvas will be implemented here.")
+    canvas_html = """
+<style>
+  #canvas {
+      border: 1px solid #000;
+      touch-action: none;
+      width: 280px;
+      height: 280px;
+  }
+</style>
+<canvas id="canvas" width="280" height="280"></canvas>
+<br>
+<button onclick="clearCanvas()">Clear</button>
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+var drawing = false;
+canvas.addEventListener("mousedown", function(e) {
+    drawing = true;
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+});
+canvas.addEventListener("mousemove", function(e) {
+    if (drawing) {
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+    }
+});
+canvas.addEventListener("mouseup", function(e) {
+    drawing = false;
+});
+canvas.addEventListener("mouseleave", function(e) {
+    drawing = false;
+});
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+</script>
+"""
+    components.html(canvas_html, height=350)
 
     st.subheader("Prediction Results")
     st.text("Predicted digit and confidence scores will be shown here.")
