@@ -1,0 +1,52 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:17.4
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-myuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mypassword}
+      POSTGRES_DB: ${POSTGRES_DB:-mndb}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/config/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  model_service:
+    build:
+      context: ./model_service
+      dockerfile: Dockerfile
+    container_name: model_service
+    environment:
+      - MODEL_PATH=model_service/src/exported_model.pt
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - mnist_net
+
+  web_app:
+    build:
+      context: ./web_app
+      dockerfile: Dockerfile
+    container_name: web_app
+    environment:
+      - PORT=8501
+      - MODEL_SERVICE_URL=http://model_service:8000/predict
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-myuser}:${POSTGRES_PASSWORD:-mypassword}@db:5432/${POSTGRES_DB:-mndb}
+    ports:
+      - "8501:8501"
+    depends_on:
+      - model_service
+      - db
+    networks:
+      - mnist_net
+
+volumes:
+  db_data:
+
+networks:
+  mnist_net:
+    driver: bridge
