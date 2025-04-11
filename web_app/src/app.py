@@ -1,5 +1,6 @@
 import streamlit as st
-import streamlit.components.v1 as components
+from streamlit_drawable_canvas import st_canvas
+
 
 st.set_page_config(
     page_title="MNIST Digit Classifier",
@@ -16,45 +17,28 @@ def main():
     )
 
     st.subheader("Drawing Canvas")
-    canvas_html = """
-<style>
-  #canvas {
-      border: 1px solid #000;
-      touch-action: none;
-      width: 280px;
-      height: 280px;
-  }
-</style>
-<canvas id="canvas" width="280" height="280"></canvas>
-<br>
-<button onclick="clearCanvas()">Clear</button>
-<script>
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
-var drawing = false;
-canvas.addEventListener("mousedown", function(e) {
-    drawing = true;
-    ctx.beginPath();
-    ctx.moveTo(e.offsetX, e.offsetY);
-});
-canvas.addEventListener("mousemove", function(e) {
-    if (drawing) {
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.stroke();
-    }
-});
-canvas.addEventListener("mouseup", function(e) {
-    drawing = false;
-});
-canvas.addEventListener("mouseleave", function(e) {
-    drawing = false;
-});
-function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-</script>
-"""
-    components.html(canvas_html, height=350)
+
+    # Create a canvas component
+    canvas_result = st_canvas(
+        fill_color="rgba(255, 255, 255, 0.0)",  # Transparent background
+        stroke_width=15,  # Brush size
+        stroke_color="#FFFFFF",  # White brush
+        background_color="#000000",  # Black background (MNIST-like)
+        width=280,  # Canvas width (MNIST size)
+        height=280,  # Canvas height (MNIST size)
+        drawing_mode="freedraw",
+        key="canvas",
+    )
+
+    # Add a classify button
+    if st.button("Classify Digit"):
+        if canvas_result.image_data is not None:
+            # Convert the image data to grayscale
+            img_data = canvas_result.image_data
+            if img_data is not None and img_data.shape[0] > 0:
+                st.write("Image captured! Ready to send to model service.")
+                # This is where you would send the image to the model service
+                # For now, just display a placeholder for the model response
 
     st.subheader("Prediction Results")
     st.text("Predicted digit and confidence scores will be shown here.")
