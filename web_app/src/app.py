@@ -3,11 +3,16 @@ from streamlit_drawable_canvas import st_canvas
 from utils.prediction_logger import log_prediction
 from utils.client import send_prediction_request
 
-
 st.set_page_config(
     page_title="MNIST Digit Classifier",
     layout="wide"
 )
+
+# Initialize session state variables if they don't exist
+if 'prediction' not in st.session_state:
+    st.session_state.prediction = {"confidence": {}, "prediction": "N/A"}
+if 'predicted_digit' not in st.session_state:
+    st.session_state.predicted_digit = "N/A"
 
 
 def main():
@@ -41,27 +46,32 @@ def main():
                 img_data = canvas_result.image_data
                 if img_data is not None and img_data.shape[0] > 0:
                     st.write("Image captured! Ready to send to model service.")
-                    prediction = send_prediction_request(img_data)
-                    # This is where you would send the image to model service
-                    # For now, just display a placeholder for model response
+                    st.session_state.prediction = send_prediction_request(
+                        img_data)
+                    if "prediction" in st.session_state.prediction:
+                        st.session_state.predicted_digit = (
+                            st.session_state.prediction["prediction"]
+                        )
+
     with cols[1]:
-        # Placeholder predictions dictionary for demo purposes
-        predictions = prediction.get("confidence", {})
+        # Get predictions dictionary
+        predictions = st.session_state.prediction.get("confidence", {})
         subcols = st.columns([2, 1, 1])
         with subcols[0]:
             st.subheader("Prediction Results")
         with subcols[1]:
-            predicted_digit = predictions.get("prediction", "N/A")
-            st.markdown("")
-            st.markdown(f"Predicted Digit: **{predicted_digit}**")
-        with subcols[2]:
             st.markdown("")
             st.markdown(
-                f"Confidence Score: **{predictions[predicted_digit]}**"
-            )
+                f"Predicted Digit: **{st.session_state.predicted_digit}**")
+        with subcols[2]:
+            confidence = predictions.get(
+                st.session_state.predicted_digit, "N/A")
+            st.markdown("")
+            st.markdown(f"Confidence Score: **{confidence}**")
 
-        # Determine predicted digit
-        st.bar_chart(predictions)
+        # Show bar chart of predictions if available
+        if predictions:
+            st.bar_chart(predictions)
 
     st.subheader("Input True Label")
     with st.form(key="true_label_form"):
@@ -72,13 +82,23 @@ def main():
                     int(true_label) >= 0 and
                     int(true_label) <= 9):
                 try:
-                    # Log the prediction along with the true label
-                    log_prediction(
-                        int(predicted_digit),
-                        predictions[predicted_digit],
-                        int(true_label)
-                    )
-                    st.success(f"True Label accepted and logged: {true_label}")
+                    # Only log if we have a valid prediction
+                    if st.session_state.predicted_digit != "N/A" and (
+                        st.session_state.predicted_digit in predictions
+                    ):
+                        # Log the prediction along with the true label
+                        log_prediction(
+                            int(st.session_state.predicted_digit),
+                            predictions[st.session_state.predicted_digit],
+                            int(true_label)
+                        )
+                        st.success(
+                            f"True Label accepted and logged: {true_label}")
+                    else:
+                        st.warning(
+                            "No valid prediction to log. "
+                            "Please classify a digit first."
+                        )
                 except Exception as e:
                     st.error(f"Failed to log prediction: {e}")
             else:
