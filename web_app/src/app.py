@@ -107,29 +107,40 @@ def main():
             else:
                 st.error("Invalid input. Please enter a digit from 0-9.")
 
-
     # Display all logged predictions from the database
     st.subheader("Logged Predictions")
     predictions_table = fetch_all_predictions()
     if predictions_table:
         from datetime import datetime
         for record in predictions_table:
-            # record columns: id, timestamp, predicted_digit, confidence_score, true_label
-            try:
-                dt = datetime.fromisoformat(record[1])
-            except Exception:
-                dt = record[1]
-            if isinstance(dt, datetime):
-                ts_formatted = dt.strftime("%-d %b. %Y %H:%M")
-            else:
-                ts_formatted = record[1]
-            predicted_str = f"Predicted: {record[2]}"
-            actual_str = f"Actual: {record[4]}"
-            conf_str = f"Confidence: {round(record[3], 0):.0f}%"
-            line = f"{ts_formatted} {predicted_str} {actual_str} {conf_str}"
-            st.write(line)
+            with st.container():
+                try:
+                    dt = datetime.fromisoformat(record[1])
+                except Exception:
+                    dt = record[1]
+                if isinstance(dt, datetime):
+                    date_formatted = dt.strftime("%-d %b. %Y")
+                    time_formatted = dt.strftime("%H:%M")
+                else:
+                    ts_formatted = record[1]
+                predicted_str = f"Predicted: {record[2]}"
+                actual_str = f"Actual: {record[4]}"
+                conf_str = (
+                    f"Confidence Score: {round(record[3] * 100, 0):.0f}%"
+                )
+                ts_formatted = f"**{date_formatted}** {time_formatted}"
+                cols = st.columns([1, 1, 1, 1])
+                with cols[0]:
+                    st.markdown(ts_formatted)
+                with cols[1]:
+                    st.markdown(predicted_str)
+                with cols[2]:
+                    st.markdown(actual_str)
+                with cols[3]:
+                    st.markdown(conf_str)
     else:
         st.info("No predictions logged yet.")
+
 
 if __name__ == "__main__":
     main()
