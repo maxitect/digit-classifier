@@ -20,7 +20,7 @@ def create_app():
         # Startup: Load model
         logger.info("Loading model...")
         try:
-            model = load_model(settings.model_path)
+            model = load_model(settings.export_model_path)
             app.state.model = model
             logger.info("Model loaded successfully.")
         except Exception as e:
