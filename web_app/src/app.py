@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from utils.prediction_logger import log_prediction
 from utils.client import send_prediction_request
+from utils.db import fetch_all_predictions
 
 st.set_page_config(
     page_title="MNIST Digit Classifier",
@@ -106,6 +107,14 @@ def main():
             else:
                 st.error("Invalid input. Please enter a digit from 0-9.")
 
+
+    # Display all logged predictions from the database
+    st.subheader("Logged Predictions")
+    predictions_table = fetch_all_predictions()
+    if predictions_table:
+        st.dataframe(predictions_table)
+    else:
+        st.info("No predictions logged yet.")
 
 if __name__ == "__main__":
     main()
