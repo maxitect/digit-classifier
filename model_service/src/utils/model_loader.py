@@ -1,6 +1,6 @@
 import os
 import torch
-from model import MNISTCNN
+from src.model import MNISTCNN
 
 
 def load_model(model_path: str):

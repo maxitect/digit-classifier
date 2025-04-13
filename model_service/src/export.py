@@ -1,7 +1,7 @@
 import torch
 from torchvision import transforms
 import argparse
-from model import MNISTCNN
+from src.model import MNISTCNN
 
 
 def preprocess_input(image):

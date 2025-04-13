@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Request, HTTPException, status, Depends
-from models.prediction import (
+from src.models.prediction import (
     PredictRequest,
     PredictResponse,
     ErrorResponse
 )
-from utils.image_processing import preprocess_image
-from utils.validation import validate_image_data
+from src.utils.image_processing import preprocess_image
+from src.utils.validation import validate_image_data
 from typing import Any, Dict
 import torch
 from torch import Tensor

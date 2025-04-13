@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from data_loader import get_data_loaders
-from model import MNISTCNN
+from src.data_loader import get_data_loaders
+from src.model import MNISTCNN
 import argparse
 import os
 
