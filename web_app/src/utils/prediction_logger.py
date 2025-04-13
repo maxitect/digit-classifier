@@ -1,5 +1,5 @@
 import logging
-from src.utils.db import execute_query
+from utils.db import execute_query
 
 logger = logging.getLogger(__name__)
 
