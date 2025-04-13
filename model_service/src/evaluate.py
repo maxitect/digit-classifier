@@ -10,6 +10,7 @@ from sklearn.metrics import (
     confusion_matrix
 )
 from model import MNISTCNN
+from src.config import settings
 
 
 def get_test_loader(batch_size=64, download=True):
@@ -58,7 +59,7 @@ def main():
     parser.add_argument(
         '--checkpoint',
         type=str,
-        default='model_service/src/best_model.pth',
+        default=settings.model_path,
         help='Path to model checkpoint'
     )
     parser.add_argument(
