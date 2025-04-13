@@ -2,6 +2,7 @@ import torch
 from torchvision import transforms
 import argparse
 from src.model import MNISTCNN
+from src.config import settings
 
 
 def preprocess_input(image):
@@ -37,13 +38,13 @@ def main():
     parser.add_argument(
         '--checkpoint',
         type=str,
-        default='model_service/src/best_model.pth',
+        default=settings.model_path,
         help='Path to the trained model checkpoint'
     )
     parser.add_argument(
         '--export-path',
         type=str,
-        default='model_service/src/exported_model.pt',
+        default=settings.export_model_path,
         help='Path to save the exported model'
     )
     args = parser.parse_args()
