@@ -113,30 +113,28 @@ def main():
     if predictions_table:
         from datetime import datetime
         for record in predictions_table:
-            with st.expander(label="", expanded=True):
-                try:
-                    dt = datetime.fromisoformat(record[1])
-                except Exception:
-                    dt = record[1]
-                if isinstance(dt, datetime):
-                    date_formatted = dt.strftime("%-d %b. %Y")
-                    time_formatted = dt.strftime("%H:%M")
-                else:
-                    ts_formatted = record[1]
-                predicted_str = f"Predicted: {record[2]}"
-                actual_str = f"Actual: {record[4]}"
-                conf_str = (
-                    f"Confidence Score: {round(record[3] * 100, 0):.0f}%"
-                )
-                ts_formatted = f"**{date_formatted}** {time_formatted}"
-                cols = st.columns([1, 1, 1, 1])
+            try:
+                dt = datetime.fromisoformat(record[1])
+            except Exception:
+                dt = record[1]
+            if isinstance(dt, datetime):
+                date_formatted = dt.strftime("%-d %b. %Y")
+                time_formatted = dt.strftime("%H:%M")
+            else:
+                ts_formatted = record[1]
+            predicted_str = f"Predicted: {record[2]}"
+            actual_str = f"Actual: {record[4]}"
+            conf_str = (
+                f"Confidence Score: {round(record[3] * 100, 0):.0f}%"
+            )
+            ts_formatted = f"**{date_formatted}** {time_formatted}"
+            with st.expander(label=f"{ts_formatted}", expanded=True):
+                cols = st.columns([1, 1, 1])
                 with cols[0]:
-                    st.markdown(ts_formatted)
-                with cols[1]:
                     st.markdown(predicted_str)
-                with cols[2]:
+                with cols[1]:
                     st.markdown(actual_str)
-                with cols[3]:
+                with cols[2]:
                     st.markdown(conf_str)
     else:
         st.info("No predictions logged yet.")
