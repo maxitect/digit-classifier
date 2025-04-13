@@ -111,8 +111,9 @@ def fetch_all_predictions():
     """
     Fetch all entries from the predictions table.
     """
-    query = "SELECT * FROM predictions"
+    query = "SELECT * FROM predictions;"
     return execute_query(query)
+
 
 def close_all_connections():
     """
