@@ -112,7 +112,9 @@ def main():
     st.subheader("Logged Predictions")
     predictions_table = fetch_all_predictions()
     if predictions_table:
-        st.dataframe(predictions_table)
+        for record in predictions_table:
+            line = " ".join([f"{key}: {value}" for key, value in record.items()])
+            st.write(line)
     else:
         st.info("No predictions logged yet.")
 
