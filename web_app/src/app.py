@@ -66,6 +66,8 @@ def main():
         with subcols[2]:
             confidence = predictions.get(
                 st.session_state.predicted_digit, "N/A")
+            if confidence != "N/A":
+                confidence = f"{round(confidence, 0):.0f}%"
             st.markdown("")
             st.markdown(f"Confidence Score: **{confidence}**")
 
@@ -89,7 +91,7 @@ def main():
                         # Log the prediction along with the true label
                         log_prediction(
                             int(st.session_state.predicted_digit),
-                            predictions[st.session_state.predicted_digit],
+                            predictions[st.session_state.predicted_digit]/100,
                             int(true_label)
                         )
                         st.success(
