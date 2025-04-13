@@ -20,7 +20,9 @@ services:
       dockerfile: Dockerfile
     container_name: model_service
     environment:
-      - MODEL_PATH=src/exported_model.pt
+      - CHECKPOINTS_DIR=src/checkpoints
+      - MODEL_PATH=src/best_model.pth
+      - EXPORT_MODEL_PATH=src/exported_model.pt
     ports:
       - "8000:8000"
     depends_on:
