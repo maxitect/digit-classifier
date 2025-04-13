@@ -112,8 +112,11 @@ def main():
     st.subheader("Logged Predictions")
     predictions_table = fetch_all_predictions()
     if predictions_table:
+        # Assuming predictions_table returns tuples with columns:
+        # id, timestamp, predicted_digit, confidence_score, true_label
+        headers = ["id", "timestamp", "predicted_digit", "confidence_score", "true_label"]
         for record in predictions_table:
-            line = " ".join([f"{key}: {value}" for key, value in record.items()])
+            line = " ".join([f"{header}: {value}" for header, value in zip(headers, record)])
             st.write(line)
     else:
         st.info("No predictions logged yet.")
