@@ -5,6 +5,7 @@ from src.data_loader import get_data_loaders
 from src.model import MNISTCNN
 import argparse
 import os
+from src.config import settings
 
 
 def train(model, device, train_loader, optimizer, criterion):
@@ -68,7 +69,7 @@ def main():
     parser.add_argument(
         '--checkpoint-dir',
         type=str,
-        default='model_service/src/checkpoints',
+        default=settings.checkpoint_dir,
         help='Directory to save checkpoints'
     )
     args = parser.parse_args()
