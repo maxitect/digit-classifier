@@ -124,10 +124,14 @@ def main():
                 ts_formatted = record[1]
             predicted_str = f"Predicted: {record[2]}"
             actual_str = f"Actual: {record[4]}"
+            if record[2] == record[4]:
+                result = "Classified correctly"
+            else:
+                result = "Classified incorrectly"
             conf_str = (
                 f"Confidence Score: {round(record[3] * 100, 0):.0f}%"
             )
-            ts_formatted = f"**{date_formatted}** {time_formatted}"
+            ts_formatted = f"**{date_formatted}** {time_formatted}: {result}"
             with st.expander(label=f"{ts_formatted}", expanded=True):
                 cols = st.columns([1, 1, 1])
                 with cols[0]:
