@@ -112,11 +112,21 @@ def main():
     st.subheader("Logged Predictions")
     predictions_table = fetch_all_predictions()
     if predictions_table:
-        # Assuming predictions_table returns tuples with columns:
-        # id, timestamp, predicted_digit, confidence_score, true_label
-        headers = ["id", "timestamp", "predicted_digit", "confidence_score", "true_label"]
+        from datetime import datetime
         for record in predictions_table:
-            line = " ".join([f"{header}: {value}" for header, value in zip(headers, record)])
+            # record columns: id, timestamp, predicted_digit, confidence_score, true_label
+            try:
+                dt = datetime.fromisoformat(record[1])
+            except Exception:
+                dt = record[1]
+            if isinstance(dt, datetime):
+                ts_formatted = dt.strftime("%-d %b. %Y %H:%M")
+            else:
+                ts_formatted = record[1]
+            predicted_str = f"Predicted: {record[2]}"
+            actual_str = f"Actual: {record[4]}"
+            conf_str = f"Confidence: {round(record[3], 0):.0f}%"
+            line = f"{ts_formatted} {predicted_str} {actual_str} {conf_str}"
             st.write(line)
     else:
         st.info("No predictions logged yet.")
