@@ -1,8 +1,7 @@
-version: "3.8"
 services:
   db:
     image: postgres:17.4
-    container_name: postgres_db
+    container_name: db
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-myuser}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mypassword}
@@ -12,6 +11,8 @@ services:
       - ./db/config/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
+    networks:
+      - mnist_net
 
   model_service:
     build:
@@ -19,7 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: model_service
     environment:
-      - MODEL_PATH=model_service/src/exported_model.pt
+      - MODEL_PATH=src/exported_model.pt
     ports:
       - "8000:8000"
     depends_on:
