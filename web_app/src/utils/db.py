@@ -107,6 +107,13 @@ def execute_query(query, params=None):
         return_connection(conn)
 
 
+def fetch_all_predictions():
+    """
+    Fetch all entries from the predictions table.
+    """
+    query = "SELECT * FROM predictions"
+    return execute_query(query)
+
 def close_all_connections():
     """
     Close all connections in the pool.
