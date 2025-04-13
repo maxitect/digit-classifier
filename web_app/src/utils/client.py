@@ -35,7 +35,17 @@ def send_prediction_request(image_data) -> dict:
         payload = {"image_data": img_str}
         response = requests.post(MODEL_SERVICE_URL, json=payload, timeout=5)
         response.raise_for_status()
-        return response.json()
+
+        prediction = response.json()
+
+        # Convert confidence values to percentages
+        if "confidence" in prediction:
+            prediction["confidence"] = {k: v * 100 for k, v in prediction[
+                "confidence"
+            ].items()}
+
+        return prediction
+
     except requests.exceptions.RequestException as e:
         # Return an error dictionary
         return {
