@@ -113,7 +113,7 @@ def main():
     if predictions_table:
         from datetime import datetime
         for record in predictions_table:
-            with st.container():
+            with st.expander(label="", expanded=True):
                 try:
                     dt = datetime.fromisoformat(record[1])
                 except Exception:
