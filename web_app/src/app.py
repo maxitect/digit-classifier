@@ -46,7 +46,6 @@ def main():
                 # Convert the image data to grayscale
                 img_data = canvas_result.image_data
                 if img_data is not None and img_data.shape[0] > 0:
-                    st.write("Image captured! Ready to send to model service.")
                     st.session_state.prediction = send_prediction_request(
                         img_data)
                     if "prediction" in st.session_state.prediction:
